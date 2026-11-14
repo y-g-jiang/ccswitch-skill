@@ -1,0 +1,32 @@
+# 官方（ChatGPT 登录）配置模板
+#
+# 前置：~/.codex/auth.json 是 chatgpt 模式（codex login / codex login --device-auth 生成）
+#      且 tokens.refresh_token 是最新的（先跑 scripts/ccswitch.py sync-tokens）
+#
+# 重点：
+#   * 没有 base_url —— Codex 回落到官方后端
+#   * name = "OpenAI" 是刻意保留的（官方能力门控按名字判断）
+#   * model 用官方模型（例如 gpt-6-astra）；
+#     第三方命名（gpt-6.1-sol / gpt-5.6 …）在官方模式会报
+#     "model is not supported when using Codex with a ChatGPT account"
+
+model_provider = "custom"
+model = "gpt-6-astra"
+review_model = "gpt-5.5"
+
+model_reasoning_effort = "high"
+
+[model_providers.custom]
+name = "OpenAI"
+requires_openai_auth = true
+supports_websockets = true
+wire_api = "responses"
+
+[features]
+goals = true
+
+[desktop]
+conversationDetailMode = "STEPS_COMMANDS"   # 官方模式其实不需要，但保持统一更省事
+
+# 注意：不要在这里留 service_tier = "priority" 之类中转时代的键，
+# 官方后端不认识时可能直接 4xx。

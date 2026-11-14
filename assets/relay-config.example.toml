@@ -1,0 +1,37 @@
+# 中转（API key 模式）配置模板
+# 示例：chenxiapi（晨夕中转）。把 sk-REPLACE_ME 换成你自己的 key。
+#
+# 用法：把下面这些行合并进 ~/.codex/config.toml 顶部（其它 [projects.*] 等段落保留），
+#       同时把 ~/.codex/auth.json 写成：
+#       { "OPENAI_API_KEY": "sk-REPLACE_ME" }
+#       然后重启 Codex 应用。
+
+model_provider = "custom"
+model = "gpt-6.1-sol"
+review_model = "gpt-5.5"
+
+model_reasoning_effort = "medium"
+
+[model_providers.custom]
+name = "晨夕API"
+base_url = "https://chenxiapi.com"     # 注意：不带 /v1
+wire_api = "responses"
+requires_openai_auth = true
+# model_catalog_url = "https://chenxiapi.com/v1/models"   # 可选：让 Codex 自动发现模型
+# experimental_bearer_token = "sk-REPLACE_ME"            # 可选：混合模式（auth.json 留官方登录时用）
+
+[features]
+goals = true
+api_key_model_discovery = true
+
+[desktop]
+conversationDetailMode = "STEPS_COMMANDS"   # 避免"Work browser access"身份闸
+
+# ---------------------------------------------------------------------------
+# 换别家中转时只需改这四处：
+#   base_url  → 该中转的接口根地址（有的带 /v1，按其文档）
+#   name      → 显示名（随便，但 name="OpenAI" 会启用官方能力门控）
+#   model     → 该中转支持且确实可用的模型名
+#   wire_api  → 一般 "responses"；若该站只支持 chat/completions，
+#               需要 CC Switch 的本地路由做协议转换，不能直连
+# ---------------------------------------------------------------------------

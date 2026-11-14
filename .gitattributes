@@ -1,0 +1,5 @@
+# 统一用 LF 存储，避免 Windows 检出后脚本被改成 CRLF
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.zip binary
